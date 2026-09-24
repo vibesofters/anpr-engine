@@ -1,0 +1,11 @@
+{
+  "schema_version": "anpr-public-route-allowlist-v1",
+  "implemented": true,
+  "routes": [
+    {"method": "GET", "path": "/"}, {"method": "GET", "path": "/en"}, {"method": "GET", "path": "/tr"},
+    {"method": "GET", "path": "/en/privacy"}, {"method": "GET", "path": "/tr/privacy"},
+    {"method": "GET", "path": "/en/responsible-use"}, {"method": "GET", "path": "/tr/responsible-use"},
+    {"method": "GET", "path": "/en/limitations"}, {"method": "GET", "path": "/tr/limitations"},
+    {"method": "POST", "path": "/api/inference"}
+  ]
+}

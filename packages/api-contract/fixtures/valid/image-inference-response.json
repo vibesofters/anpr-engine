@@ -1,0 +1,9 @@
+{
+  "schema_version":"anpr-image-inference-response-v1","request_id":"01JQABCDEFGHJKMNPQRSTVWXYZ","status":"resolved",
+  "models":{"detection":{"model_id":"detection-v3-20260827","sha256":"0d5e9b52fae5638e0ef1badafdeb53fe0771d056e43c4953d13cceed520e71ea"},"recognition":{"model_id":"m3-v4-stroke-20260914","sha256":"25b6e4af757b87da75162293a28274e3a0ecbb7f29bc55489b7132e353ad5ff7"}},
+  "detection":{"state":"found","box_xyxy_normalized":[0.1,0.2,0.8,0.7],"confidence":0.92},
+  "crop_refinement":{"state":"applied","method":"BLUE_BAND_GLYPH_QUAD_V1"},
+  "recognition":{"prediction":"34 ABC 123","confidence":0.88},"structural_validation":"valid","human_review_required":true,
+  "annotated_image":{"media_type":"image/png","encoded_data":"AAAA","metadata_removed":true},
+  "timings_ms":{"total":400,"validation":20,"detection":180,"crop_refinement":40,"recognition":160},"warnings":[]
+}

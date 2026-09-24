@@ -1,0 +1,1 @@
+{"schema_version":"anpr-session-result-v1","result_schema_version":"anpr-image-inference-response-v1","request_id":"01JQABCDEFGHJKMNPQRSTVWXYZ","review_outcome":"OWNER_CONFIRMED_PROJECT_MODEL","model_prediction":"34 ABC 123","reviewed_value":"34 ABC 123","warnings":[]}

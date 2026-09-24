@@ -1,0 +1,19 @@
+{
+  "schema_version": "anpr-public-deployment-exclusions-v1",
+  "excluded_entry_points": [
+    "scripts/launch_anpr_v1_browser.py"
+  ],
+  "excluded_modules": [
+    "src/anpr_engine/integration/browser.py",
+    "src/anpr_engine/integration/project_models_browser_ui.py",
+    "src/anpr_engine/integration/review_store.py"
+  ],
+  "reason": "legacy_loopback_owner_development_tool_persists_multipart_batch_review_state",
+  "requirements": {
+    "loopback_binding_only": true,
+    "public_container_entry_point": false,
+    "public_service_import": false,
+    "public_route_allowlist_overlap": false,
+    "future_build_must_fail_if_included": true
+  }
+}

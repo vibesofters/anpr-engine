@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anpr-engine.vibesofters.com/schemas/api/v1/anpr-image-inference-metadata-v1.schema.json",
+  "title": "AnprImageInferenceMetadataV1",
+  "description": "Private BFF-to-inference metadata accompanying one separately transported, validated raw image body. The browser cannot supply request or admission identity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request_id", "admission_id", "locale", "declared_media_type", "detected_media_type", "compressed_size_bytes", "privacy_acknowledged", "source_metadata_handling"],
+  "properties": {
+    "schema_version": {"const": "anpr-image-inference-metadata-v1"},
+    "request_id": {"type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$", "maxLength": 26},
+    "admission_id": {"type": "string", "pattern": "^[A-Za-z0-9_-]{32,64}$", "maxLength": 64},
+    "locale": {"type": "string", "enum": ["en", "tr"]},
+    "declared_media_type": {"type": "string", "enum": ["image/jpeg", "image/png"]},
+    "detected_media_type": {"type": "string", "enum": ["image/jpeg", "image/png"]},
+    "compressed_size_bytes": {"type": "integer", "minimum": 1, "maximum": 10485760},
+    "privacy_acknowledged": {"const": true},
+    "source_metadata_handling": {"const": "ignored_or_removed"}
+  },
+  "allOf": [
+    {"if": {"properties": {"declared_media_type": {"const": "image/jpeg"}}}, "then": {"properties": {"detected_media_type": {"const": "image/jpeg"}}}},
+    {"if": {"properties": {"declared_media_type": {"const": "image/png"}}}, "then": {"properties": {"detected_media_type": {"const": "image/png"}}}}
+  ]
+}

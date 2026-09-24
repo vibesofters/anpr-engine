@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anpr-engine.vibesofters.com/schemas/privacy/v1/anpr-data-lifecycle-v1.schema.json",
+  "title": "AnprDataLifecycleV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "processing_scope", "storage_policy", "retained_server_side", "prohibited_uses", "cleanup_outcomes", "released_buffers", "lock_release"],
+  "properties": {
+    "schema_version": {"const": "anpr-data-lifecycle-v1"},
+    "processing_scope": {"const": "single_request_in_controlled_memory"},
+    "storage_policy": {"const": "no_intentional_server_side_retention"},
+    "retained_server_side": {"type": "array", "maxItems": 0},
+    "prohibited_uses": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "uniqueItems": true,
+      "items": {"type": "string", "enum": ["training", "evaluation", "analytics", "dataset_construction", "debug_archive", "unrelated_reuse", "future_processing", "request_replay", "result_cache"]}
+    },
+    "cleanup_outcomes": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "uniqueItems": true,
+      "items": {"type": "string", "enum": ["success", "validation_failure", "no_detection", "recognition_failure", "timeout", "cancellation", "client_disconnect", "internal_exception", "service_shutdown"]}
+    },
+    "released_buffers": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {"type": "string", "enum": ["source_image", "decoded_image", "crop", "tensor", "annotated_result", "request_buffer"]}
+    },
+    "lock_release": {"const": "finally_on_every_outcome"}
+  }
+}

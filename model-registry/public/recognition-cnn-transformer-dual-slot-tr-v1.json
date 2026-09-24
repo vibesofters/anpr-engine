@@ -1,0 +1,28 @@
+{
+  "public_schema_version": "anpr-engine-public-model-registry-v1",
+  "model_id": "cnn_transformer_dual_slot_tr_v1",
+  "model_version": "m3-v4-stroke-20260914",
+  "architecture_summary": "Project-owned CNN width tokenizer with a compact Transformer encoder and ordered fixed character/type slots.",
+  "sha256": "25b6e4af757b87da75162293a28274e3a0ecbb7f29bc55489b7132e353ad5ff7",
+  "approved_percentage_metrics": {
+    "raw_exact": "93.37%",
+    "tr_exact": "93.37%",
+    "character_accuracy": "98.96%",
+    "character_error_rate": "1.04%",
+    "length_accuracy": "98.98%",
+    "type_accuracy": "98.47%"
+  },
+  "intended_use": "Recognition of a detected Turkish plate crop followed by structural validation and human review.",
+  "limitations": [
+    "Development-validation metrics are not production accuracy.",
+    "No independent field-holdout claim.",
+    "Structural validity does not prove transcription correctness.",
+    "Private weights are not distributed."
+  ],
+  "project_provenance": "Project-developed and project-trained PyTorch implementation selected after controlled comparison of four project recognition families.",
+  "citations": [
+    {"concept": "Bidirectional recurrent sequence modeling", "reference": "Schuster and Paliwal, Bidirectional Recurrent Neural Networks, IEEE Transactions on Signal Processing, 1997"},
+    {"concept": "Connectionist Temporal Classification", "reference": "Graves et al., Connectionist Temporal Classification, ICML 2006"},
+    {"concept": "Transformer", "reference": "Vaswani et al., Attention Is All You Need, arXiv:1706.03762"}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anpr-engine.vibesofters.com/schemas/privacy/v1/anpr-processing-notice-v1.schema.json",
+  "title": "AnprProcessingNoticeV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contact", "acknowledgement_required", "legal_basis_claim", "notices"],
+  "properties": {
+    "schema_version": {"const": "anpr-processing-notice-v1"},
+    "contact": {"const": "erncnkr@gmail.com"},
+    "acknowledgement_required": {"const": true},
+    "legal_basis_claim": {"const": "user_acknowledgement_not_sole_legal_basis"},
+    "notices": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["en", "tr"],
+      "properties": {
+        "en": {"$ref": "#/$defs/Notice"},
+        "tr": {"$ref": "#/$defs/Notice"}
+      }
+    }
+  },
+  "$defs": {
+    "Notice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["purpose", "authorization", "accuracy", "human_review", "retention", "training", "prohibited_uses", "acknowledgement_label"],
+      "properties": {
+        "purpose": {"type": "string", "minLength": 20, "maxLength": 300},
+        "authorization": {"type": "string", "minLength": 20, "maxLength": 300},
+        "accuracy": {"type": "string", "minLength": 20, "maxLength": 300},
+        "human_review": {"type": "string", "minLength": 20, "maxLength": 300},
+        "retention": {"type": "string", "minLength": 20, "maxLength": 300},
+        "training": {"type": "string", "minLength": 20, "maxLength": 300},
+        "prohibited_uses": {"type": "string", "minLength": 20, "maxLength": 500},
+        "acknowledgement_label": {"type": "string", "minLength": 10, "maxLength": 240}
+      }
+    }
+  }
+}

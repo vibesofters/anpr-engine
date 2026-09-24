@@ -1,0 +1,12 @@
+schema_version: "public-template-v1"
+purpose: non-identifying software tests and local demonstrations
+source_images: none
+output_scale: small_fixture_only
+font_dependency:
+  family: Barlow Condensed
+  variants: [Bold, SemiBold]
+  license: SIL-OFL-1.1
+requirements:
+  - Generate fictional values that are not copied from real records.
+  - Do not present the font as project branding or an official plate typeface.
+  - Do not publish a training-scale dataset without a separate approval.

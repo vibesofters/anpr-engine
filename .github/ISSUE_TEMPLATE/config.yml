@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security report
+    url: https://github.com/vibesofters/anpr-engine/security/policy
+    about: Read the private reporting instructions; do not post vulnerabilities publicly.

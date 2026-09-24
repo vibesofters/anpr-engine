@@ -1,0 +1,19 @@
+{
+  "schema_version": "anpr-image-validation-contract-v1",
+  "allowed_media_types": ["image/jpeg", "image/png"],
+  "maximum_compressed_bytes": 10485760,
+  "maximum_decoded_pixels": 20000000,
+  "maximum_width": 8192,
+  "maximum_height": 8192,
+  "required_frame_count": 1,
+  "reject_animated": true,
+  "reject_truncated": true,
+  "reject_malformed": true,
+  "reject_decompression_bomb": true,
+  "require_declared_detected_decoded_type_match": true,
+  "public_octet_stream_allowed": false,
+  "multipart_allowed": false,
+  "filename_required": false,
+  "defence_in_depth": ["bff_streaming_size_limit", "bff_signature_validation", "private_service_size_and_signature_revalidation", "hardened_decode_limits", "decoded_dimension_checks", "frame_count_check", "generated_output_metadata_removal", "finally_buffer_cleanup"],
+  "buffering": "bounded_memory_only_no_persistent_spool"
+}

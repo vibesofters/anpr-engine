@@ -1,0 +1,63 @@
+name: anpr-phase2e-staging
+services:
+  inference:
+    image: anpr-engine-inference:phase2e-amd64-local
+    pull_policy: never
+    environment:
+      ANPR_SERVICE_ENV: production
+      ANPR_INTERNAL_SERVICE_CREDENTIAL: ${ANPR_INTERNAL_SERVICE_CREDENTIAL:?owner-injected runtime credential required}
+      ANPR_APPLICATION_VERSION: phase2e-staging
+      ANPR_INFERENCE_DEVICE: cpu
+      ANPR_INFERENCE_DEADLINE_SECONDS: "120"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    volumes:
+      - type: bind
+        source: ${ANPR_PRIVATE_MODEL_BUNDLE_SOURCE:?owner-controlled private model bundle required}
+        target: /models
+        read_only: true
+    networks: [private]
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=128m,uid=10001,gid=10001
+    cpus: 0.75
+    mem_limit: 2048m
+    pids_limit: 96
+    restart: "no"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/readyz', timeout=2).read()"]
+      interval: 15s
+      timeout: 3s
+      retries: 8
+      start_period: 120s
+  web:
+    image: anpr-engine-web:phase2e-amd64-local
+    pull_policy: never
+    environment:
+      ANPR_PUBLIC_ORIGIN: http://127.0.0.1:39083
+      ANPR_PRIVATE_INFERENCE_URL: http://inference:8080
+      ANPR_INTERNAL_SERVICE_CREDENTIAL: ${ANPR_INTERNAL_SERVICE_CREDENTIAL:?owner-injected runtime credential required}
+      ANPR_LOCAL_DIRECT_MODE: "1"
+    ports:
+      - 127.0.0.1:39083:3000
+    depends_on:
+      inference:
+        condition: service_healthy
+    networks: [front, private]
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,uid=10001,gid=10001
+    cpus: 0.25
+    mem_limit: 512m
+    pids_limit: 64
+    restart: "no"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/en').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+networks:
+  front: {}
+  private:
+    internal: true

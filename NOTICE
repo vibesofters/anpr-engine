@@ -1,0 +1,20 @@
+ANPR Engine
+Copyright 2026 Eren Cankur
+
+The Apache License, Version 2.0 in LICENSE applies to project-owned software
+code in this repository. It does not grant rights to private model weights,
+private or real-image datasets, plate transcriptions, or other material that
+is not distributed here.
+
+Third-party dependencies retain their own licenses and copyright notices.
+Barlow Condensed font files in assets/fonts/barlow-condensed/ are licensed
+separately under the SIL Open Font License 1.1; see the OFL.txt beside them.
+The font is a synthetic-data dependency, not ANPR Engine branding or an
+official Turkish license-plate typeface.
+
+Project documentation, research claims, and images are not relicensed by the
+software LICENSE unless a file expressly states otherwise. For the web image's
+native dependency notice, see
+deploy/docker/THIRD-PARTY-NOTICES.sharp-libvips-v1.3.3.md. Runtime container
+distribution additionally requires the version-specific license inventories
+described in deploy/docker/ and docs/reference/.

@@ -1,0 +1,81 @@
+openapi: 3.1.0
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+info:
+  title: ANPR Engine private inference service
+  version: 1.0.0
+  description: Internal-network-only, one-image, no-retention project-model inference contract.
+paths:
+  /healthz:
+    get:
+      operationId: privateServiceLiveness
+      responses:
+        "200":
+          description: Process is alive; this does not imply model readiness.
+  /readyz:
+    get:
+      operationId: privateServiceReadiness
+      responses:
+        "200":
+          description: Configuration and the single model pair are ready and capacity is available.
+        "503":
+          description: Service is not ready or the single inference slot is occupied.
+  /api/v1/inference:
+    post:
+      operationId: privateSingleImageInference
+      summary: Run one raw JPEG or PNG through the frozen project-model pipeline.
+      security:
+        - internalBearer: []
+      parameters:
+        - name: X-ANPR-Request-ID
+          in: header
+          required: true
+          schema: {type: string, pattern: "^[0-9A-HJKMNP-TV-Z]{26}$"}
+        - name: X-ANPR-Admission-ID
+          in: header
+          required: true
+          schema: {type: string, pattern: "^[A-Za-z0-9_-]{32,64}$"}
+        - name: X-ANPR-Locale
+          in: header
+          required: true
+          schema: {type: string, enum: [en, tr]}
+        - name: X-ANPR-Privacy-Acknowledged
+          in: header
+          required: true
+          schema: {type: string, const: "true"}
+      requestBody:
+        required: true
+        description: Exactly one streamed image body; multipart, base64, URLs, and filenames are prohibited.
+        content:
+          image/jpeg:
+            schema: {type: string, format: binary, maxLength: 10485760}
+          image/png:
+            schema: {type: string, format: binary, maxLength: 10485760}
+      responses:
+        "200":
+          description: Deterministic inference outcome; confidence values are informational only.
+          content:
+            application/json:
+              schema:
+                $ref: ./anpr-private-inference-response-v1.schema.json
+        "400": {$ref: "#/components/responses/Error"}
+        "403": {$ref: "#/components/responses/Error"}
+        "409": {$ref: "#/components/responses/Error"}
+        "413": {$ref: "#/components/responses/Error"}
+        "415": {$ref: "#/components/responses/Error"}
+        "422": {$ref: "#/components/responses/Error"}
+        "500": {$ref: "#/components/responses/Error"}
+        "503": {$ref: "#/components/responses/Error"}
+        "504": {$ref: "#/components/responses/Error"}
+components:
+  securitySchemes:
+    internalBearer:
+      type: http
+      scheme: bearer
+      description: Deployment-injected internal credential; never accepted from a browser or logged.
+  responses:
+    Error:
+      description: Safe error with no image, prediction, credential, path, or exception content.
+      content:
+        application/json:
+          schema:
+            $ref: ../../api/v1/anpr-api-error-v1.schema.json

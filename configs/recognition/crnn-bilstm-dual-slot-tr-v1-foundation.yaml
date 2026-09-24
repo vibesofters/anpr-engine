@@ -1,0 +1,80 @@
+schema_version: "1.0"
+model_id: crnn_bilstm_dual_slot_tr_v1
+architecture_version: "1.0"
+checkpoint_architecture_version: "1.0"
+model:
+  architecture: crnn_bilstm_dual_slot_tr_v1
+  input_channels: 3
+  input_height: 32
+  input_width: 160
+  cnn_channels: [32, 64, 128]
+  lstm_hidden_size: 128
+  lstm_layers: 2
+  dropout: 0.1
+  initialization_seed: 20260827
+crop:
+  padding_x: 2.0
+  padding_y: 1.0
+  minimum_width: 8
+  minimum_height: 4
+  target_height: 32
+  target_width: 160
+  resize_strategy: aspect_fit
+  padding_strategy: center
+  interpolation: area
+  pad_value: 0
+  input_color_space: BGR
+  output_color_space: RGB
+  debug_crop_enabled: false
+slot_extraction:
+  mechanism: learned_ordered_query_dot_product
+  max_slots: 8
+character_head:
+  vocabulary: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  pad_symbol: PAD
+  pad_index: 36
+type_head:
+  classes: [DIGIT, LETTER, PAD]
+  symbols: DLP
+  pad_index: 2
+loss:
+  name: character_slot_ce_plus_weighted_type_slot_ce
+  lambda_type: 0.20
+  character_pad_loss: equal_per_slot
+  type_pad_loss: equal_per_slot
+  metric_pad_policy: exclude_pad_positions
+profile:
+  profile_id: TR
+  country_code: TR
+  supported_formats: [2D-1L-4D, 2D-1L-5D, 2D-2L-3D, 2D-2L-4D, 2D-3L-2D, 2D-3L-3D]
+  province_rule: existing-authoritative-01-through-81
+decoder:
+  beam_width: 12
+  character_top_k: 12
+  type_score_weight: 0.20
+  minimum_decoder_confidence: null
+  minimum_score_margin: null
+augmentation:
+  probability: 0.85
+  max_translation_fraction: 0.025
+  minimum_scale: 0.96
+  maximum_tight_scale: 1.02
+  max_rotation_degrees: 2.0
+  max_perspective_fraction: 0.0125
+  blur_probability: 0.20
+  motion_blur_probability: 0.10
+  brightness_delta: 0.16
+  contrast_delta: 0.14
+  jpeg_quality_minimum: 78
+  degradation_scale_minimum: 0.72
+  noise_stddev_maximum: 3.5
+  glare_alpha_maximum: 0.10
+  horizontal_flip: false
+  vertical_flip: false
+country_layout_head:
+  enabled: false
+  source: shared_global_embedding
+  reason: one-class-TR-head-would-be-meaningless
+artifacts:
+  private_weights_included: false
+  runtime_weight_location: externally-configured

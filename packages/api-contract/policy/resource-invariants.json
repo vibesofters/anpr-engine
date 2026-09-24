@@ -1,0 +1,23 @@
+{
+  "schema_version": "anpr-public-resource-invariants-v1",
+  "one_image_per_request": true,
+  "batch_processing": false,
+  "global_inference_concurrency": 1,
+  "per_session_active_inference": 1,
+  "queue_depth": 0,
+  "model_bearing_processes": 1,
+  "device_preference": "cpu_first",
+  "unsafe_concurrency_override_allowed": false,
+  "automatic_retry": false,
+  "background_inference": false,
+  "websocket_required": false,
+  "polling_required": false,
+  "database": false,
+  "redis": false,
+  "object_storage": false,
+  "accounts": false,
+  "persistent_history": false,
+  "analytics": false,
+  "external_error_monitoring": false,
+  "public_python_inference_endpoint": false
+}

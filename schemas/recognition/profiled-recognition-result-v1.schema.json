@@ -1,0 +1,194 @@
+{
+  "$defs": {
+    "ProfileReason": {
+      "enum": [
+        "EMPTY",
+        "UNSUPPORTED_CHARACTER",
+        "INVALID_PROVINCE",
+        "UNSUPPORTED_TR_FORMAT"
+      ],
+      "title": "ProfileReason",
+      "type": "string"
+    },
+    "ProfileValidation": {
+      "additionalProperties": false,
+      "properties": {
+        "format_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TrFormat"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "governed_validator_disagreement": {
+          "title": "Governed Validator Disagreement",
+          "type": "boolean"
+        },
+        "legacy_reason_codes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Legacy Reason Codes",
+          "type": "array"
+        },
+        "legacy_validator_valid": {
+          "title": "Legacy Validator Valid",
+          "type": "boolean"
+        },
+        "legacy_validator_version": {
+          "title": "Legacy Validator Version",
+          "type": "string"
+        },
+        "profile_id": {
+          "title": "Profile Id",
+          "type": "string"
+        },
+        "profile_version": {
+          "title": "Profile Version",
+          "type": "string"
+        },
+        "reason_codes": {
+          "items": {
+            "$ref": "#/$defs/ProfileReason"
+          },
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "valid": {
+          "title": "Valid",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "valid",
+        "profile_id",
+        "profile_version",
+        "format_id",
+        "reason_codes",
+        "legacy_validator_version",
+        "legacy_validator_valid",
+        "legacy_reason_codes",
+        "governed_validator_disagreement"
+      ],
+      "title": "ProfileValidation",
+      "type": "object"
+    },
+    "ResultStatus": {
+      "enum": [
+        "ACCEPTED",
+        "LOW_CONFIDENCE",
+        "FAILED"
+      ],
+      "title": "ResultStatus",
+      "type": "string"
+    },
+    "TrFormat": {
+      "enum": [
+        "2D-1L-4D",
+        "2D-1L-5D",
+        "2D-2L-3D",
+        "2D-2L-4D",
+        "2D-3L-2D",
+        "2D-3L-3D"
+      ],
+      "title": "TrFormat",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidate_count": {
+      "title": "Candidate Count",
+      "type": "integer"
+    },
+    "decoded_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Decoded Text"
+    },
+    "decoder_confidence": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Decoder Confidence"
+    },
+    "decoder_score": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Decoder Score"
+    },
+    "decoder_version": {
+      "title": "Decoder Version",
+      "type": "string"
+    },
+    "decoding_changed_raw": {
+      "title": "Decoding Changed Raw",
+      "type": "boolean"
+    },
+    "profile_id": {
+      "title": "Profile Id",
+      "type": "string"
+    },
+    "raw_confidence": {
+      "title": "Raw Confidence",
+      "type": "number"
+    },
+    "raw_text": {
+      "title": "Raw Text",
+      "type": "string"
+    },
+    "reason": {
+      "title": "Reason",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ResultStatus"
+    },
+    "structural_validation": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ProfileValidation"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "raw_text",
+    "raw_confidence",
+    "decoded_text",
+    "profile_id",
+    "decoder_version",
+    "decoder_score",
+    "decoder_confidence",
+    "decoding_changed_raw",
+    "structural_validation",
+    "status",
+    "reason",
+    "candidate_count"
+  ],
+  "title": "ProfiledRecognitionResult",
+  "type": "object"
+}

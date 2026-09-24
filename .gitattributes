@@ -1,0 +1,2 @@
+# Preserve upstream OFL 1.1 formatting byte-for-byte.
+assets/fonts/barlow-condensed/OFL.txt -whitespace

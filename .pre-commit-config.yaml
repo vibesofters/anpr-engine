@@ -1,0 +1,43 @@
+repos:
+  - repo: local
+    hooks:
+      - id: repository-diff-check
+        name: repository diff whitespace check
+        entry: git diff --check --cached
+        language: system
+        pass_filenames: false
+      - id: uv-lock-check
+        name: uv lock consistency
+        entry: uv lock --check
+        language: system
+        pass_filenames: false
+      - id: ruff-check
+        name: Ruff lint
+        entry: uv run --locked ruff check src tests
+        language: system
+        pass_filenames: false
+      - id: ruff-format
+        name: Ruff format check
+        entry: uv run --locked ruff format --check src tests
+        language: system
+        pass_filenames: false
+      - id: mypy
+        name: mypy strict type check
+        entry: uv run --locked mypy src tests
+        language: system
+        pass_filenames: false
+      - id: pytest
+        name: pytest unit and contract tests
+        entry: uv run --locked pytest -q
+        language: system
+        pass_filenames: false
+      - id: repository-validation
+        name: repository hygiene validation
+        entry: uv run --locked python scripts/validate_repository.py
+        language: system
+        pass_filenames: false
+      - id: dataset-schema-check
+        name: dataset schema export check
+        entry: uv run --locked python scripts/datasets/export_dataset_schemas.py --check
+        language: system
+        pass_filenames: false

@@ -1,0 +1,20 @@
+{
+  "schema_version": "anpr-private-inference-response-v1",
+  "request_id": "01K5DP5YEX8ZDB7MVT1J0B4G6Q",
+  "admission_id": "admission_00000000000000000000001",
+  "status": "prediction_available",
+  "prediction": "34ABC123",
+  "prediction_source": "existing_project_decoder",
+  "decoding_changed_raw": false,
+  "structural_validity": "valid",
+  "informational_confidence": 0.91,
+  "detection": {"candidate_count": 1, "selection_rule": "highest_confidence_then_box_coordinates", "box_xyxy_normalized": [0.1, 0.2, 0.8, 0.5], "informational_confidence": 0.89},
+  "models": {
+    "detection": {"model_id": "detection-v3-20260827", "sha256": "0d5e9b52fae5638e0ef1badafdeb53fe0771d056e43c4953d13cceed520e71ea"},
+    "recognition": {"model_id": "m3-v4-stroke-20260914", "sha256": "25b6e4af757b87da75162293a28274e3a0ecbb7f29bc55489b7132e353ad5ff7"}
+  },
+  "crop_policy": "BLUE_BAND_GLYPH_QUAD_V1",
+  "timings_ms": {"total": 30.0, "validation": 2.0, "detection": 10.0, "crop_refinement": 3.0, "recognition": 15.0},
+  "error_code": null,
+  "private_path": "/private/models/detection.pt"
+}

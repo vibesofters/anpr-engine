@@ -1,0 +1,8 @@
+# Local-only override for compose.public-candidate.yaml. Never deploy to Coolify.
+services:
+  web:
+    environment:
+      ANPR_PUBLIC_ORIGIN: http://127.0.0.1:39084
+      ANPR_LOCAL_DIRECT_MODE: "1"
+    ports:
+      - 127.0.0.1:39084:3000

@@ -1,0 +1,6 @@
+schema_version: "1.0"
+paths:
+  artifact_root: artifacts
+runtime:
+  device: cpu
+  log_level: INFO

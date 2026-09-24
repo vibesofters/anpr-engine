@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anpr-engine.vibesofters.com/schemas/review/v1/anpr-human-review-v1.schema.json",
+  "title": "AnprHumanReviewV1",
+  "description": "Browser-memory-only review state. Corrections are never submitted to the server in the initial public design.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "storage_scope", "action", "model_prediction", "reviewed_value"],
+  "properties": {
+    "schema_version": {"const": "anpr-human-review-v1"},
+    "storage_scope": {"const": "active_page_memory_only"},
+    "action": {"type": "string", "enum": ["confirm", "correct", "unresolved", "clear"]},
+    "model_prediction": {"type": ["string", "null"], "pattern": "^[0-9A-Z ]{1,16}$", "maxLength": 16},
+    "reviewed_value": {"type": ["string", "null"], "pattern": "^[0-9A-Z ]{1,16}$", "maxLength": 16}
+  }
+}

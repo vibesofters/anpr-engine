@@ -1,0 +1,33 @@
+{
+  "schema_version": "anpr-terminology-glossary-v1",
+  "authoritative_locale": "en",
+  "turkish_review_status": "native_review_required",
+  "terms": [
+    {"term_id":"upload_image","en":"Upload image","tr":"Görüntü yükle"},
+    {"term_id":"authorized_image","en":"Authorized image","tr":"Yetkili görüntü"},
+    {"term_id":"processing_notice","en":"Processing notice","tr":"İşleme bildirimi"},
+    {"term_id":"detection","en":"Detection","tr":"Tespit"},
+    {"term_id":"recognition","en":"Recognition","tr":"Tanıma"},
+    {"term_id":"crop_refinement","en":"Crop refinement","tr":"Kırpma iyileştirme"},
+    {"term_id":"prediction","en":"Prediction","tr":"Tahmin"},
+    {"term_id":"structural_validation","en":"Structural validation","tr":"Yapısal doğrulama"},
+    {"term_id":"human_review","en":"Human review","tr":"İnsan incelemesi"},
+    {"term_id":"confirm","en":"Confirm","tr":"Onayla"},
+    {"term_id":"correct","en":"Correct","tr":"Düzelt"},
+    {"term_id":"resolved","en":"Resolved","tr":"Çözümlenmiş"},
+    {"term_id":"unresolved","en":"Unresolved","tr":"Çözümlenmemiş"},
+    {"term_id":"processing","en":"Processing","tr":"İşleniyor"},
+    {"term_id":"no_plate_detected","en":"No plate detected","tr":"Plaka tespit edilmedi"},
+    {"term_id":"image_rejected","en":"Image rejected","tr":"Görüntü reddedildi"},
+    {"term_id":"busy","en":"Busy","tr":"Meşgul"},
+    {"term_id":"rate_limited","en":"Rate limited","tr":"İstek sınırına ulaşıldı"},
+    {"term_id":"model_unavailable","en":"Model unavailable","tr":"Model kullanılamıyor"},
+    {"term_id":"timeout","en":"Timeout","tr":"Zaman aşımı"},
+    {"term_id":"maintenance","en":"Maintenance","tr":"Bakım"},
+    {"term_id":"privacy_notice","en":"Privacy notice","tr":"Gizlilik bildirimi"},
+    {"term_id":"responsible_use","en":"Responsible use","tr":"Sorumlu kullanım"},
+    {"term_id":"clear_result","en":"Clear result","tr":"Sonucu temizle"},
+    {"term_id":"download_result","en":"Download result","tr":"Sonucu indir"}
+  ],
+  "immutable_identifier_classes": ["model_id", "sha256", "schema_name", "api_field_name", "cli_option", "release_id"]
+}

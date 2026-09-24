@@ -1,0 +1,7 @@
+{
+  "schema_version": "anpr-safe-logging-contract-v1",
+  "allowed_fields": ["timestamp", "severity", "request_id", "route_category", "status_code", "error_code", "stage_timings_ms", "capacity_state", "application_version", "api_version", "schema_version", "model_versions", "health_state", "readiness_state"],
+  "prohibited_fields": ["image", "image_bytes", "encoded_image", "base64", "filename", "plate_text", "prediction", "correction", "crop", "annotated_image", "image_hash", "payload", "request_body", "response_body", "raw_ip", "cookie", "session_id", "admission_id", "user_metadata", "query_string", "stack_trace", "secret", "model_path", "dataset_path"],
+  "canary_values": ["SENSITIVE_PLATE_34_CANARY_999", "SENSITIVE_COOKIE_CANARY", "SENSITIVE_FILENAME_CANARY.jpg"],
+  "canary_rule": "fail_if_any_canary_appears_in_serialized_log_output"
+}

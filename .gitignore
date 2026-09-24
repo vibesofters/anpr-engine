@@ -1,0 +1,100 @@
+# Secrets and local environment overrides
+.env
+.env.*
+!.env.example
+configs/local/
+*.local
+docker-compose.override.yml
+docker-compose.override.yaml
+compose.override.yml
+compose.override.yaml
+*.pem
+*.key
+
+# Python environments, caches, builds, and test output
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+build/
+dist/
+.tox/
+.nox/
+
+# IDE and OS metadata
+.DS_Store
+.idea/
+.vscode/
+.worktrees/
+.playwright-cli/
+*.swp
+
+# Jupyter generated state
+.ipynb_checkpoints/
+
+# Dataset payloads and sensitive/local data
+# Ignore everything first, then allow only reviewed small policy/metadata files.
+/datasets/**
+!/datasets/**/
+new_datasets2/
+!/datasets/DATASET_STORAGE.md
+!/datasets/sources/*/source-v*/SOURCE.md
+!/datasets/sources/*/source-v*/LICENSE.md
+!/datasets/sources/*/source-v*/inventory.json
+!/datasets/canonical/detection/v*/README.md
+!/datasets/canonical/recognition/v*/README.md
+!/datasets/canonical/recognition/*/v*/README.md
+!/datasets/golden/README.md
+!/datasets/hard_cases/README.md
+!/datasets/derived/recognition/*/README.md
+# Source checksum manifests are local payload integrity evidence, not reviewed metadata.
+/datasets/sources/*/source-v*/checksums.sha256
+
+# Generated artifacts
+artifacts/*
+output/
+outputs/
+logs/
+runs/
+benchmarks/output/
+review-exports/
+inference-exports/
+uploads/
+crops/
+tmp/
+temp/
+
+# JavaScript and Next.js local output
+node_modules/
+.next/
+*.tsbuildinfo
+out/
+.turbo/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Model binaries and checkpoints
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.engine
+*.safetensors
+
+# Generated image/debug payloads outside approved safe fixtures
+*.tmp
+*.log
+*.bak
+*.orig
+*.rej

@@ -1,0 +1,7 @@
+{
+  "blank_index": 0,
+  "blank_token": "<CTC_BLANK>",
+  "content_sha256": "c6fd51eab888d1da2363ad1607f888878b3b7b6dc1eccfb34016d5287f6b6df4",
+  "symbols": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  "version": "turkish-plate-ctc-v1"
+}

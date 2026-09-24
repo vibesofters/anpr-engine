@@ -1,0 +1,57 @@
+name: anpr-phase2d-local
+services:
+  inference:
+    image: anpr-engine-inference:phase2d-local
+    environment:
+      ANPR_SERVICE_ENV: production
+      ANPR_INTERNAL_SERVICE_CREDENTIAL: ${ANPR_INTERNAL_SERVICE_CREDENTIAL:?runtime credential required}
+      ANPR_APPLICATION_VERSION: phase2d-local
+    volumes:
+      - type: bind
+        source: ${ANPR_PRIVATE_MODEL_BUNDLE_SOURCE:?private bundle path required}
+        target: /models
+        read_only: true
+    networks: [private]
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=128m,uid=10001,gid=10001
+    cpus: 1.0
+    mem_limit: 4096m
+    pids_limit: 128
+    restart: "no"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/readyz', timeout=2).read()"]
+      interval: 15s
+      timeout: 3s
+      retries: 12
+      start_period: 90s
+  web:
+    image: anpr-engine-web:phase2d-local
+    environment:
+      ANPR_PUBLIC_ORIGIN: http://127.0.0.1:${ANPR_LOCAL_PORT:-3000}
+      ANPR_PRIVATE_INFERENCE_URL: http://inference:8080
+      ANPR_INTERNAL_SERVICE_CREDENTIAL: ${ANPR_INTERNAL_SERVICE_CREDENTIAL:?runtime credential required}
+      ANPR_LOCAL_DIRECT_MODE: "1"
+    ports:
+      - 127.0.0.1:${ANPR_LOCAL_PORT:-3000}:3000
+    depends_on:
+      inference:
+        condition: service_healthy
+    networks: [front, private]
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,uid=10001,gid=10001
+    cpus: 0.5
+    mem_limit: 1024m
+    pids_limit: 64
+    restart: "no"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/en').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+networks:
+  front: {}
+  private:
+    internal: true

@@ -1,0 +1,31 @@
+{
+  "public_schema_version": "anpr-engine-public-model-registry-v1",
+  "model_id": "yolox_multiscale_v1",
+  "model_version": "detection-v3-20260827",
+  "architecture_summary": "Project-owned single-stage, one-class, anchor-free detector with stride 8/16/32 features, FPN/PAN-style fusion, decoupled objectness/regression heads, focal-style objectness loss, GIoU regression, dynamic assignment, and non-maximum suppression.",
+  "sha256": "0d5e9b52fae5638e0ef1badafdeb53fe0771d056e43c4953d13cceed520e71ea",
+  "approved_percentage_metrics": {
+    "precision": "66.45%",
+    "recall": "95.58%",
+    "f1": "78.39%",
+    "map_50": "95.09%",
+    "map_50_95": "56.47%",
+    "top1_correct": "94.86%"
+  },
+  "intended_use": "Plate-region proposal generation within the reviewed ANPR Engine pipeline.",
+  "limitations": [
+    "Development-validation metrics are not production accuracy.",
+    "No independent field-holdout claim.",
+    "One-class plate localization only.",
+    "Private weights are not distributed."
+  ],
+  "project_provenance": "Independently implemented and project-trained in PyTorch from random initialization; informed by established detection concepts.",
+  "citations": [
+    {"concept": "YOLO family", "reference": "Redmon et al., You Only Look Once, arXiv:1506.02640"},
+    {"concept": "YOLOX and SimOTA", "reference": "Ge et al., YOLOX: Exceeding YOLO Series in 2021, arXiv:2107.08430"},
+    {"concept": "Feature Pyramid Networks", "reference": "Lin et al., Feature Pyramid Networks for Object Detection, arXiv:1612.03144"},
+    {"concept": "Path Aggregation Network", "reference": "Liu et al., Path Aggregation Network for Instance Segmentation, arXiv:1803.01534"},
+    {"concept": "Focal loss", "reference": "Lin et al., Focal Loss for Dense Object Detection, arXiv:1708.02002"},
+    {"concept": "Generalized IoU", "reference": "Rezatofighi et al., Generalized Intersection over Union, arXiv:1902.09630"}
+  ]
+}

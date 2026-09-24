@@ -1,0 +1,187 @@
+{
+  "$defs": {
+    "ArtifactIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "reference": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "sha256"
+      ],
+      "title": "ArtifactIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "charset_version": {
+      "minLength": 1,
+      "title": "Charset Version",
+      "type": "string"
+    },
+    "decoded_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decoded Text"
+    },
+    "decoder_confidence": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decoder Confidence"
+    },
+    "decoder_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decoder Reason"
+    },
+    "decoder_status": {
+      "anyOf": [
+        {
+          "enum": [
+            "ACCEPTED",
+            "LOW_CONFIDENCE"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decoder Status"
+    },
+    "decoder_version": {
+      "minLength": 1,
+      "title": "Decoder Version",
+      "type": "string"
+    },
+    "decoding_changed_raw": {
+      "default": false,
+      "title": "Decoding Changed Raw",
+      "type": "boolean"
+    },
+    "normalized_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Normalized Text"
+    },
+    "preprocessing_signature": {
+      "minLength": 1,
+      "title": "Preprocessing Signature",
+      "type": "string"
+    },
+    "profile_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Profile Id"
+    },
+    "raw_text": {
+      "title": "Raw Text",
+      "type": "string"
+    },
+    "recognition_confidence": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Recognition Confidence"
+    },
+    "recognizer": {
+      "$ref": "#/$defs/ArtifactIdentity"
+    },
+    "structural_validation": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Structural Validation"
+    }
+  },
+  "required": [
+    "raw_text",
+    "recognizer",
+    "decoder_version",
+    "charset_version",
+    "preprocessing_signature"
+  ],
+  "title": "RecognitionResult",
+  "type": "object"
+}

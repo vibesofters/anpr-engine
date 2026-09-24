@@ -1,0 +1,22 @@
+{
+  "public_schema_version": "anpr-engine-public-model-registry-v1",
+  "model_id": "anpr-engine-project-pipeline",
+  "model_version": "1.0.0-candidate",
+  "architecture_summary": "Project Detection -> BLUE_BAND_GLYPH_QUAD_V1 -> Project Recognition -> structural validation -> human review",
+  "model_identities": {
+    "detection_sha256": "0d5e9b52fae5638e0ef1badafdeb53fe0771d056e43c4953d13cceed520e71ea",
+    "recognition_sha256": "25b6e4af757b87da75162293a28274e3a0ecbb7f29bc55489b7132e353ad5ff7"
+  },
+  "intended_use": "Controlled Turkish license-plate detection and recognition research with explicit human review.",
+  "limitations": [
+    "Development-validation evidence only.",
+    "No independent field-holdout evidence or production-accuracy claim.",
+    "Predictions require human review and must not be treated as verified identity records.",
+    "Private model weights are not distributed."
+  ],
+  "project_provenance": "Project-developed PyTorch implementations, configurations, training, evaluation, and integration.",
+  "citations": [
+    {"concept": "YOLOX and SimOTA", "reference": "Ge et al., YOLOX: Exceeding YOLO Series in 2021, arXiv:2107.08430"},
+    {"concept": "Transformer", "reference": "Vaswani et al., Attention Is All You Need, arXiv:1706.03762"}
+  ]
+}

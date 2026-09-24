@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anpr-engine.vibesofters.com/schemas/api/v1/anpr-image-inference-response-v1.schema.json",
+  "title": "AnprImageInferenceResponseV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request_id", "status", "models", "detection", "crop_refinement", "recognition", "structural_validation", "human_review_required", "annotated_image", "timings_ms", "warnings"],
+  "properties": {
+    "schema_version": {"const": "anpr-image-inference-response-v1"},
+    "request_id": {"type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$", "maxLength": 26},
+    "status": {"type": "string", "enum": ["resolved", "unresolved", "no_plate_detected"]},
+    "models": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["detection", "recognition"],
+      "properties": {
+        "detection": {"$ref": "#/$defs/DetectionModelIdentity"},
+        "recognition": {"$ref": "#/$defs/RecognitionModelIdentity"}
+      }
+    },
+    "detection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "box_xyxy_normalized", "confidence"],
+      "properties": {
+        "state": {"type": "string", "enum": ["found", "not_found"]},
+        "box_xyxy_normalized": {
+          "oneOf": [
+            {"type": "null"},
+            {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "number", "minimum": 0, "maximum": 1}}
+          ]
+        },
+        "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+      }
+    },
+    "crop_refinement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "method"],
+      "properties": {
+        "state": {"type": "string", "enum": ["applied", "not_run", "unavailable"]},
+        "method": {"oneOf": [{"const": "BLUE_BAND_GLYPH_QUAD_V1"}, {"type": "null"}]}
+      }
+    },
+    "recognition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prediction", "confidence"],
+      "properties": {
+        "prediction": {"type": ["string", "null"], "pattern": "^[0-9A-Z ]{1,16}$", "maxLength": 16},
+        "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+      }
+    },
+    "structural_validation": {"type": "string", "enum": ["valid", "invalid", "indeterminate", "not_run"]},
+    "human_review_required": {"const": true},
+    "annotated_image": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["media_type", "encoded_data", "metadata_removed"],
+          "properties": {
+            "media_type": {"type": "string", "enum": ["image/jpeg", "image/png"]},
+            "encoded_data": {"type": "string", "contentEncoding": "base64", "minLength": 4, "maxLength": 13981016},
+            "metadata_removed": {"const": true}
+          }
+        }
+      ]
+    },
+    "timings_ms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "validation", "detection", "crop_refinement", "recognition"],
+      "properties": {
+        "total": {"type": "number", "minimum": 0, "maximum": 120000},
+        "validation": {"type": "number", "minimum": 0, "maximum": 120000},
+        "detection": {"type": "number", "minimum": 0, "maximum": 120000},
+        "crop_refinement": {"type": "number", "minimum": 0, "maximum": 120000},
+        "recognition": {"type": "number", "minimum": 0, "maximum": 120000}
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {"type": "string", "enum": ["ANNOTATED_IMAGE_OMITTED_SIZE_LIMIT", "LOW_DETECTION_CONFIDENCE", "LOW_RECOGNITION_CONFIDENCE", "STRUCTURAL_VALIDATION_FAILED", "MULTIPLE_DETECTIONS_TOP1_SELECTED", "CROP_REFINEMENT_FAILED", "RECOGNITION_UNRESOLVED"]}
+    }
+  },
+  "$defs": {
+    "DetectionModelIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_id", "sha256"],
+      "properties": {
+        "model_id": {"const": "detection-v3-20260827"},
+        "sha256": {"const": "0d5e9b52fae5638e0ef1badafdeb53fe0771d056e43c4953d13cceed520e71ea"}
+      }
+    },
+    "RecognitionModelIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_id", "sha256"],
+      "properties": {
+        "model_id": {"const": "m3-v4-stroke-20260914"},
+        "sha256": {"const": "25b6e4af757b87da75162293a28274e3a0ecbb7f29bc55489b7132e353ad5ff7"}
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anpr-engine.vibesofters.com/schemas/api/v1/anpr-api-error-v1.schema.json",
+  "title": "AnprApiErrorV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request_id", "error"],
+  "properties": {
+    "schema_version": {"const": "anpr-api-error-v1"},
+    "request_id": {"type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$", "maxLength": 26},
+    "error": {
+      "type": "object", "additionalProperties": false, "required": ["code", "message_key", "retryable"],
+      "properties": {
+        "code": {"$ref": "#/$defs/ErrorCode"},
+        "message_key": {"type": "string", "pattern": "^error\\.[a-z_]{3,48}$", "maxLength": 54},
+        "retryable": {"type": "boolean"}
+      }
+    }
+  },
+  "$defs": {
+    "ErrorCode": {
+      "type": "string",
+      "enum": ["INVALID_REQUEST", "UNSUPPORTED_MEDIA_TYPE", "IMAGE_TOO_LARGE", "IMAGE_DIMENSIONS_EXCEEDED", "IMAGE_DECODE_FAILED", "IMAGE_MULTIFRAME_REJECTED", "IMAGE_TRUNCATED", "ORIGIN_REJECTED", "PRIVACY_ACKNOWLEDGEMENT_REQUIRED", "SESSION_INFERENCE_ACTIVE", "RATE_LIMITED", "CAPACITY_UNAVAILABLE", "MODEL_NOT_READY", "NO_PLATE_DETECTED", "RECOGNITION_UNRESOLVED", "INFERENCE_DEADLINE_EXCEEDED", "INFERENCE_FAILED", "MAINTENANCE"]
+    }
+  }
+}

@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling==1.32.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "anpr-engine"
+version = "0.0.0"
+description = "Project-owned Turkish ANPR research and demonstration core"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "numpy==2.2.6",
+  "opencv-python-headless==4.12.0.88",
+  "Pillow==12.3.0",
+  "pydantic==2.13.4",
+  "PyYAML==6.0.3",
+  "starlette==1.6.0",
+  "torch==2.13.0",
+  "uvicorn==0.53.0",
+]
+
+[dependency-groups]
+dev = [
+  "hatchling==1.32.0",
+  "jsonschema==4.26.0",
+  "mypy==2.3.1",
+  "openapi-spec-validator==0.9.0",
+  "pre-commit==4.6.2",
+  "pytest==9.1.1",
+  "ruff==0.16.4",
+  "types-PyYAML==6.0.12.20260815",
+  "types-jsonschema==4.26.0.20260518",
+]
+
+[tool.uv]
+required-version = "==0.12.5"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/anpr_engine"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [
+  "artifacts",
+  "datasets/raw",
+  "datasets/interim",
+  "datasets/processed",
+  "packages/api-contract/generated",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+strict = true
+show_error_codes = true
+warn_unreachable = true
+python_version = "3.11"
+mypy_path = "src"
+exclude = ["artifacts/", "datasets/"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-config", "--strict-markers"]

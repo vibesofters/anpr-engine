@@ -1,0 +1,84 @@
+name: Public Candidate CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.12.5"
+          enable-cache: true
+
+      - name: Verify lockfile
+        run: uv lock --check
+
+      - name: Install locked environment
+        run: uv sync --locked --all-groups --python "${{ matrix.python-version }}"
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Lint
+        run: uv run --locked ruff check src scripts tests packages/api-contract/generated/python
+
+      - name: Check formatting
+        run: uv run --locked ruff format --check src scripts tests packages/api-contract/generated/python
+
+      - name: Type check
+        run: uv run --locked mypy src tests packages/api-contract/generated/python
+
+      - name: Test
+        run: uv run --locked pytest
+
+      - name: Validate JSON and YAML
+        run: |
+          uv run --locked python scripts/validate_public_candidate.py json
+          uv run --locked python scripts/validate_public_candidate.py yaml
+
+      - name: Compile JSON Schemas and validate fixtures
+        run: uv run --locked python scripts/validate_public_candidate.py schemas
+
+      - name: Validate OpenAPI 3.1
+        run: uv run --locked python scripts/validate_public_candidate.py openapi
+
+      - name: Check documentation links
+        run: uv run --locked python scripts/validate_public_candidate.py links
+
+      - name: Check public repository boundary
+        run: uv run --locked python scripts/validate_public_candidate.py scans
+
+      - name: Check privacy/upload contracts and generated drift
+        run: |
+          uv run --locked python scripts/validate_public_candidate.py contracts
+          uv run --locked python scripts/generate_api_contracts.py --check
+
+      - name: Validate CI command paths
+        run: uv run --locked python scripts/validate_public_candidate.py ci
+
+      - name: Build package
+        run: uv build --no-sources
+
+      - name: Import built package
+        run: uv run --locked python -c "import anpr_engine; print(anpr_engine.__version__)"

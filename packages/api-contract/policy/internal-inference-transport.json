@@ -1,0 +1,9 @@
+{
+  "schema_version": "anpr-internal-inference-transport-v1",
+  "visibility": "private_application_network_only",
+  "body": "one_validated_raw_jpeg_or_png_byte_sequence",
+  "metadata_schema": "anpr-image-inference-metadata-v1",
+  "allowed_metadata": ["request_id", "admission_id", "locale", "declared_media_type", "detected_media_type", "compressed_size_bytes", "privacy_acknowledged", "source_metadata_handling"],
+  "prohibited_forwarding": ["original_filename", "browser_metadata", "client_path", "exif_metadata", "user_cookie", "raw_ip", "arbitrary_header", "query_string_metadata"],
+  "direct_public_access": false
+}

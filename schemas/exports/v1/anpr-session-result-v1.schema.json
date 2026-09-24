@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anpr-engine.vibesofters.com/schemas/exports/v1/anpr-session-result-v1.schema.json",
+  "title": "AnprSessionResultV1",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Created only in active browser memory after explicit user action; it is not sent to or retained by the server.",
+  "required": ["schema_version", "result_schema_version", "request_id", "review_outcome", "model_prediction", "reviewed_value", "warnings"],
+  "properties": {
+    "schema_version": {"const": "anpr-session-result-v1"},
+    "result_schema_version": {"const": "anpr-image-inference-response-v1"},
+    "request_id": {"type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$", "maxLength": 26},
+    "review_outcome": {"type": "string", "enum": ["OWNER_CONFIRMED_PROJECT_MODEL", "OWNER_CORRECTED", "UNRESOLVED"]},
+    "model_prediction": {"type": ["string", "null"], "pattern": "^[0-9A-Z ]{1,16}$", "maxLength": 16},
+    "reviewed_value": {"type": ["string", "null"], "pattern": "^[0-9A-Z ]{1,16}$", "maxLength": 16},
+    "warnings": {"type": "array", "maxItems": 8, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 80}}
+  }
+}

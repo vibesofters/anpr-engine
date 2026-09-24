@@ -1,0 +1,1 @@
+{"schema_version":"anpr-image-inference-metadata-v1","request_id":"01JQABCDEFGHJKMNPQRSTVWXYZ","admission_id":"0123456789abcdef0123456789abcdef","locale":"en","declared_media_type":"image/jpeg","detected_media_type":"image/jpeg","compressed_size_bytes":1024,"privacy_acknowledged":true,"source_metadata_handling":"ignored_or_removed","batch":[]}

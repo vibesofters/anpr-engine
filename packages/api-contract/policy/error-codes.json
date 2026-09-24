@@ -1,0 +1,23 @@
+{
+  "schema_version": "anpr-error-catalogue-v1",
+  "errors": [
+    {"code": "INVALID_REQUEST", "http_status": 400, "message_semantics": "request_contract_invalid", "retryable": false, "retry_guidance": "correct_request_no_automatic_retry", "cleanup": "release_all_buffers_and_locks"},
+    {"code": "UNSUPPORTED_MEDIA_TYPE", "http_status": 415, "message_semantics": "jpeg_or_png_required", "retryable": false, "retry_guidance": "choose_supported_image", "cleanup": "release_all_buffers_and_locks"},
+    {"code": "IMAGE_TOO_LARGE", "http_status": 413, "message_semantics": "compressed_limit_exceeded", "retryable": false, "retry_guidance": "choose_smaller_image", "cleanup": "release_request_buffer_and_locks"},
+    {"code": "IMAGE_DIMENSIONS_EXCEEDED", "http_status": 422, "message_semantics": "decoded_limits_exceeded", "retryable": false, "retry_guidance": "choose_smaller_dimensions", "cleanup": "release_all_buffers_and_locks"},
+    {"code": "IMAGE_DECODE_FAILED", "http_status": 422, "message_semantics": "malformed_or_unsupported_encoding", "retryable": false, "retry_guidance": "choose_valid_jpeg_or_png", "cleanup": "release_all_buffers_and_locks"},
+    {"code": "IMAGE_MULTIFRAME_REJECTED", "http_status": 422, "message_semantics": "exactly_one_frame_required", "retryable": false, "retry_guidance": "choose_single_frame_image", "cleanup": "release_all_buffers_and_locks"},
+    {"code": "IMAGE_TRUNCATED", "http_status": 422, "message_semantics": "truncated_image_rejected", "retryable": false, "retry_guidance": "choose_complete_image", "cleanup": "release_all_buffers_and_locks"},
+    {"code": "ORIGIN_REJECTED", "http_status": 403, "message_semantics": "origin_not_allowed", "retryable": false, "retry_guidance": "do_not_retry", "cleanup": "release_request_buffer"},
+    {"code": "PRIVACY_ACKNOWLEDGEMENT_REQUIRED", "http_status": 400, "message_semantics": "responsible_use_acknowledgement_required", "retryable": false, "retry_guidance": "review_notice_and_acknowledge", "cleanup": "release_request_buffer"},
+    {"code": "SESSION_INFERENCE_ACTIVE", "http_status": 409, "message_semantics": "session_request_already_active", "retryable": true, "retry_guidance": "manual_retry_after_current_request", "cleanup": "release_request_buffer"},
+    {"code": "RATE_LIMITED", "http_status": 429, "message_semantics": "request_rate_exceeded", "retryable": true, "retry_guidance": "manual_retry_after_cooldown", "cleanup": "release_request_buffer"},
+    {"code": "CAPACITY_UNAVAILABLE", "http_status": 503, "message_semantics": "zero_wait_capacity_unavailable", "retryable": true, "retry_guidance": "manual_retry_later", "cleanup": "release_request_buffer"},
+    {"code": "MODEL_NOT_READY", "http_status": 503, "message_semantics": "approved_models_not_ready", "retryable": true, "retry_guidance": "manual_retry_after_readiness", "cleanup": "release_all_buffers_and_locks"},
+    {"code": "NO_PLATE_DETECTED", "http_status": 422, "message_semantics": "project_detector_found_no_plate", "retryable": false, "retry_guidance": "review_image_or_choose_another", "cleanup": "release_all_buffers_and_locks"},
+    {"code": "RECOGNITION_UNRESOLVED", "http_status": 200, "message_semantics": "recognition_requires_human_resolution", "retryable": false, "retry_guidance": "human_review_required", "cleanup": "release_all_buffers_and_locks_after_response"},
+    {"code": "INFERENCE_DEADLINE_EXCEEDED", "http_status": 504, "message_semantics": "bounded_deadline_exceeded", "retryable": true, "retry_guidance": "manual_retry_only", "cleanup": "cancel_work_release_all_buffers_and_locks"},
+    {"code": "INFERENCE_FAILED", "http_status": 500, "message_semantics": "safe_internal_failure", "retryable": false, "retry_guidance": "no_automatic_retry", "cleanup": "release_all_buffers_and_locks"},
+    {"code": "MAINTENANCE", "http_status": 503, "message_semantics": "service_maintenance", "retryable": true, "retry_guidance": "manual_retry_later", "cleanup": "release_request_buffer"}
+  ]
+}

@@ -1,0 +1,43 @@
+"""Project-owned domain contracts."""
+
+from anpr_engine.domain.contracts import (
+    ArtifactIdentity,
+    BBoxXYXY,
+    CropReference,
+    DebugArtifacts,
+    DetectionCandidate,
+    EngineError,
+    ErrorCode,
+    ImageRef,
+    ImageShape,
+    InferenceResult,
+    PixelCrop,
+    PlateValidationReason,
+    PlateValidationResult,
+    ProcessingStage,
+    RecognitionResult,
+    ResultStatus,
+    SchemaVersion,
+    StageTimings,
+)
+
+__all__ = [
+    "ArtifactIdentity",
+    "BBoxXYXY",
+    "CropReference",
+    "DebugArtifacts",
+    "DetectionCandidate",
+    "EngineError",
+    "ErrorCode",
+    "ImageRef",
+    "ImageShape",
+    "InferenceResult",
+    "PlateValidationReason",
+    "PlateValidationResult",
+    "PixelCrop",
+    "ProcessingStage",
+    "RecognitionResult",
+    "ResultStatus",
+    "SchemaVersion",
+    "StageTimings",
+]

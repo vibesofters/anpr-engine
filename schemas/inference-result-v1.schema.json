@@ -1,0 +1,773 @@
+{
+  "$defs": {
+    "ArtifactIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "reference": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "sha256"
+      ],
+      "title": "ArtifactIdentity",
+      "type": "object"
+    },
+    "BBoxXYXY": {
+      "additionalProperties": false,
+      "description": "Absolute half-open coordinates: [x1, x2) x [y1, y2).",
+      "properties": {
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "x2": {
+          "title": "X2",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        },
+        "y2": {
+          "title": "Y2",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x1",
+        "y1",
+        "x2",
+        "y2"
+      ],
+      "title": "BBoxXYXY",
+      "type": "object"
+    },
+    "CropReference": {
+      "additionalProperties": false,
+      "properties": {
+        "crop_id": {
+          "minLength": 1,
+          "title": "Crop Id",
+          "type": "string"
+        },
+        "pixel_crop": {
+          "$ref": "#/$defs/PixelCrop"
+        },
+        "preprocessing_signature": {
+          "minLength": 1,
+          "title": "Preprocessing Signature",
+          "type": "string"
+        },
+        "relative_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Relative Path"
+        },
+        "source_bbox": {
+          "$ref": "#/$defs/BBoxXYXY"
+        }
+      },
+      "required": [
+        "crop_id",
+        "pixel_crop",
+        "source_bbox",
+        "preprocessing_signature"
+      ],
+      "title": "CropReference",
+      "type": "object"
+    },
+    "DebugArtifacts": {
+      "additionalProperties": false,
+      "properties": {
+        "annotated_image_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Annotated Image Path"
+        },
+        "crop_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crop Path"
+        }
+      },
+      "title": "DebugArtifacts",
+      "type": "object"
+    },
+    "DetectionCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "bbox": {
+          "$ref": "#/$defs/BBoxXYXY"
+        },
+        "class_id": {
+          "const": "license_plate",
+          "default": "license_plate",
+          "title": "Class Id",
+          "type": "string"
+        },
+        "detection_confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Detection Confidence",
+          "type": "number"
+        },
+        "detector": {
+          "$ref": "#/$defs/ArtifactIdentity"
+        }
+      },
+      "required": [
+        "bbox",
+        "detection_confidence",
+        "detector"
+      ],
+      "title": "DetectionCandidate",
+      "type": "object"
+    },
+    "EngineError": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "context": {
+          "additionalProperties": true,
+          "title": "Context",
+          "type": "object"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "recoverable": {
+          "title": "Recoverable",
+          "type": "boolean"
+        },
+        "stage": {
+          "$ref": "#/$defs/ProcessingStage"
+        }
+      },
+      "required": [
+        "stage",
+        "code",
+        "message",
+        "recoverable"
+      ],
+      "title": "EngineError",
+      "type": "object"
+    },
+    "ErrorCode": {
+      "enum": [
+        "IMAGE_DECODE_ERROR",
+        "DETECTION_MISS",
+        "MULTIPLE_DETECTIONS",
+        "INVALID_CROP",
+        "RECOGNIZER_ERROR",
+        "PLATE_VALIDATION_FAILED",
+        "OUTPUT_WRITE_ERROR"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ImageRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Content Sha256"
+        },
+        "extension": {
+          "enum": [
+            ".jpg",
+            ".jpeg",
+            ".png"
+          ],
+          "title": "Extension",
+          "type": "string"
+        },
+        "relative_path": {
+          "minLength": 1,
+          "title": "Relative Path",
+          "type": "string"
+        },
+        "request_id": {
+          "minLength": 1,
+          "title": "Request Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "relative_path",
+        "extension"
+      ],
+      "title": "ImageRef",
+      "type": "object"
+    },
+    "ImageShape": {
+      "additionalProperties": false,
+      "properties": {
+        "channels": {
+          "exclusiveMinimum": 0,
+          "title": "Channels",
+          "type": "integer"
+        },
+        "color_space": {
+          "minLength": 1,
+          "title": "Color Space",
+          "type": "string"
+        },
+        "dtype": {
+          "minLength": 1,
+          "title": "Dtype",
+          "type": "string"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "channels",
+        "dtype",
+        "color_space"
+      ],
+      "title": "ImageShape",
+      "type": "object"
+    },
+    "PixelCrop": {
+      "additionalProperties": false,
+      "properties": {
+        "x1": {
+          "minimum": 0,
+          "title": "X1",
+          "type": "integer"
+        },
+        "x2": {
+          "exclusiveMinimum": 0,
+          "title": "X2",
+          "type": "integer"
+        },
+        "y1": {
+          "minimum": 0,
+          "title": "Y1",
+          "type": "integer"
+        },
+        "y2": {
+          "exclusiveMinimum": 0,
+          "title": "Y2",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "x1",
+        "y1",
+        "x2",
+        "y2"
+      ],
+      "title": "PixelCrop",
+      "type": "object"
+    },
+    "PlateValidationReason": {
+      "enum": [
+        "EMPTY",
+        "UNSUPPORTED_CHARACTER",
+        "INVALID_LENGTH",
+        "INVALID_PROVINCE",
+        "INVALID_STRUCTURE"
+      ],
+      "title": "PlateValidationReason",
+      "type": "string"
+    },
+    "PlateValidationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "reason_codes": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/PlateValidationReason"
+          },
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "rule_version": {
+          "minLength": 1,
+          "title": "Rule Version",
+          "type": "string"
+        },
+        "valid": {
+          "title": "Valid",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "valid",
+        "rule_version"
+      ],
+      "title": "PlateValidationResult",
+      "type": "object"
+    },
+    "ProcessingStage": {
+      "enum": [
+        "input",
+        "detection",
+        "crop",
+        "recognition",
+        "validation",
+        "output"
+      ],
+      "title": "ProcessingStage",
+      "type": "string"
+    },
+    "RecognitionResult": {
+      "additionalProperties": false,
+      "properties": {
+        "charset_version": {
+          "minLength": 1,
+          "title": "Charset Version",
+          "type": "string"
+        },
+        "decoded_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decoded Text"
+        },
+        "decoder_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decoder Confidence"
+        },
+        "decoder_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decoder Reason"
+        },
+        "decoder_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "ACCEPTED",
+                "LOW_CONFIDENCE"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decoder Status"
+        },
+        "decoder_version": {
+          "minLength": 1,
+          "title": "Decoder Version",
+          "type": "string"
+        },
+        "decoding_changed_raw": {
+          "default": false,
+          "title": "Decoding Changed Raw",
+          "type": "boolean"
+        },
+        "normalized_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Normalized Text"
+        },
+        "preprocessing_signature": {
+          "minLength": 1,
+          "title": "Preprocessing Signature",
+          "type": "string"
+        },
+        "profile_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Profile Id"
+        },
+        "raw_text": {
+          "title": "Raw Text",
+          "type": "string"
+        },
+        "recognition_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recognition Confidence"
+        },
+        "recognizer": {
+          "$ref": "#/$defs/ArtifactIdentity"
+        },
+        "structural_validation": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Structural Validation"
+        }
+      },
+      "required": [
+        "raw_text",
+        "recognizer",
+        "decoder_version",
+        "charset_version",
+        "preprocessing_signature"
+      ],
+      "title": "RecognitionResult",
+      "type": "object"
+    },
+    "ResultStatus": {
+      "enum": [
+        "ACCEPTED",
+        "LOW_CONFIDENCE",
+        "FAILED"
+      ],
+      "title": "ResultStatus",
+      "type": "string"
+    },
+    "SchemaVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "major": {
+          "minimum": 1,
+          "title": "Major",
+          "type": "integer"
+        },
+        "minor": {
+          "minimum": 0,
+          "title": "Minor",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "major",
+        "minor"
+      ],
+      "title": "SchemaVersion",
+      "type": "object"
+    },
+    "StageTimings": {
+      "additionalProperties": false,
+      "properties": {
+        "detection_ms": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detection Ms"
+        },
+        "postprocessing_ms": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Postprocessing Ms"
+        },
+        "preprocessing_ms": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Preprocessing Ms"
+        },
+        "recognition_ms": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recognition Ms"
+        },
+        "serialization_ms": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Serialization Ms"
+        },
+        "total_ms": {
+          "minimum": 0.0,
+          "title": "Total Ms",
+          "type": "number"
+        }
+      },
+      "required": [
+        "total_ms"
+      ],
+      "title": "StageTimings",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DebugArtifacts"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "crop": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CropReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "detection": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DetectionCandidate"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "errors": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EngineError"
+      },
+      "title": "Errors",
+      "type": "array"
+    },
+    "image": {
+      "$ref": "#/$defs/ImageRef"
+    },
+    "image_shape": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ImageShape"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "reasons": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Reasons",
+      "type": "array"
+    },
+    "recognition": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RecognitionResult"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "request_id": {
+      "minLength": 1,
+      "title": "Request Id",
+      "type": "string"
+    },
+    "run_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Run Id"
+    },
+    "schema_version": {
+      "$ref": "#/$defs/SchemaVersion"
+    },
+    "status": {
+      "$ref": "#/$defs/ResultStatus"
+    },
+    "timings": {
+      "$ref": "#/$defs/StageTimings"
+    },
+    "validation": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PlateValidationResult"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "schema_version",
+    "request_id",
+    "created_at",
+    "image",
+    "status",
+    "timings"
+  ],
+  "title": "InferenceResult",
+  "type": "object"
+}

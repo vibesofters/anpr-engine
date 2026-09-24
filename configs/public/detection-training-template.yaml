@@ -1,0 +1,16 @@
+schema_version: "public-template-v1"
+private_inputs_included: false
+dataset:
+  location: "<private-dataset-location>"
+  identity: "<private-release-identity>"
+  split_policy:
+    training: "<approved-percentage>"
+    validation: "<approved-percentage>"
+    test: "not used by this template"
+model:
+  architecture: yolox_multiscale_v1
+  input_size: 384
+  feature_strides: [8, 16, 32]
+notes:
+  - Private images, labels, manifests, hashes, counts, and weights are not distributed.
+  - Populate placeholders only in an access-restricted local copy.

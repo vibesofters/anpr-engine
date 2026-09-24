@@ -1,0 +1,14 @@
+schema_version: public-recognition-training-v1
+family: cnn_transformer_dual_slot_tr_v1
+foundation_config: configs/recognition/cnn-transformer-dual-slot-tr-v1-foundation.yaml
+images_directory: images
+labels_directory: labels
+optimizer: adamw
+learning_rate: 0.001
+weight_decay: 0.0001
+batch_size: 1
+epochs: 1
+scheduler_step_epochs: 1
+scheduler_gamma: 0.95
+reporting: percentage_only
+test_or_holdout_access: false

@@ -1,0 +1,537 @@
+{
+  "$defs": {
+    "CharacterHeadConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "blank_index": {
+          "const": 0,
+          "default": 0,
+          "title": "Blank Index",
+          "type": "integer"
+        },
+        "vocabulary": {
+          "const": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+          "title": "Vocabulary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "vocabulary"
+      ],
+      "title": "CharacterHeadConfig",
+      "type": "object"
+    },
+    "CountryLayoutSeamConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "const": false,
+          "default": false,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "reason": {
+          "const": "one-class-TR-head-would-be-meaningless",
+          "title": "Reason",
+          "type": "string"
+        },
+        "source": {
+          "const": "shared_global_embedding",
+          "default": "shared_global_embedding",
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "title": "CountryLayoutSeamConfig",
+      "type": "object"
+    },
+    "CropConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "debug_crop_enabled": {
+          "default": false,
+          "title": "Debug Crop Enabled",
+          "type": "boolean"
+        },
+        "input_color_space": {
+          "default": "BGR",
+          "enum": [
+            "BGR",
+            "RGB"
+          ],
+          "title": "Input Color Space",
+          "type": "string"
+        },
+        "interpolation": {
+          "default": "area",
+          "enum": [
+            "linear",
+            "area"
+          ],
+          "title": "Interpolation",
+          "type": "string"
+        },
+        "minimum_height": {
+          "default": 4,
+          "minimum": 1,
+          "title": "Minimum Height",
+          "type": "integer"
+        },
+        "minimum_width": {
+          "default": 8,
+          "minimum": 1,
+          "title": "Minimum Width",
+          "type": "integer"
+        },
+        "output_color_space": {
+          "const": "RGB",
+          "default": "RGB",
+          "title": "Output Color Space",
+          "type": "string"
+        },
+        "pad_value": {
+          "default": 0,
+          "maximum": 255,
+          "minimum": 0,
+          "title": "Pad Value",
+          "type": "integer"
+        },
+        "padding_strategy": {
+          "default": "center",
+          "enum": [
+            "center",
+            "right"
+          ],
+          "title": "Padding Strategy",
+          "type": "string"
+        },
+        "padding_x": {
+          "default": 2.0,
+          "minimum": 0.0,
+          "title": "Padding X",
+          "type": "number"
+        },
+        "padding_y": {
+          "default": 1.0,
+          "minimum": 0.0,
+          "title": "Padding Y",
+          "type": "number"
+        },
+        "resize_strategy": {
+          "const": "aspect_fit",
+          "default": "aspect_fit",
+          "title": "Resize Strategy",
+          "type": "string"
+        },
+        "target_height": {
+          "default": 32,
+          "maximum": 128,
+          "minimum": 16,
+          "title": "Target Height",
+          "type": "integer"
+        },
+        "target_width": {
+          "default": 160,
+          "maximum": 1024,
+          "minimum": 32,
+          "title": "Target Width",
+          "type": "integer"
+        }
+      },
+      "title": "CropConfig",
+      "type": "object"
+    },
+    "DetectorAwareAugmentationConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "blur_probability": {
+          "default": 0.2,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Blur Probability",
+          "type": "number"
+        },
+        "brightness_delta": {
+          "default": 0.16,
+          "maximum": 0.3,
+          "minimum": 0.0,
+          "title": "Brightness Delta",
+          "type": "number"
+        },
+        "contrast_delta": {
+          "default": 0.14,
+          "maximum": 0.3,
+          "minimum": 0.0,
+          "title": "Contrast Delta",
+          "type": "number"
+        },
+        "degradation_scale_minimum": {
+          "default": 0.72,
+          "maximum": 1.0,
+          "minimum": 0.5,
+          "title": "Degradation Scale Minimum",
+          "type": "number"
+        },
+        "glare_alpha_maximum": {
+          "default": 0.1,
+          "maximum": 0.2,
+          "minimum": 0.0,
+          "title": "Glare Alpha Maximum",
+          "type": "number"
+        },
+        "horizontal_flip": {
+          "default": false,
+          "title": "Horizontal Flip",
+          "type": "boolean"
+        },
+        "jpeg_quality_minimum": {
+          "default": 78,
+          "maximum": 100,
+          "minimum": 60,
+          "title": "Jpeg Quality Minimum",
+          "type": "integer"
+        },
+        "max_perspective_fraction": {
+          "default": 0.0125,
+          "maximum": 0.03,
+          "minimum": 0.0,
+          "title": "Max Perspective Fraction",
+          "type": "number"
+        },
+        "max_rotation_degrees": {
+          "default": 2.0,
+          "maximum": 4.0,
+          "minimum": 0.0,
+          "title": "Max Rotation Degrees",
+          "type": "number"
+        },
+        "max_translation_fraction": {
+          "default": 0.025,
+          "maximum": 0.05,
+          "minimum": 0.0,
+          "title": "Max Translation Fraction",
+          "type": "number"
+        },
+        "maximum_tight_scale": {
+          "default": 1.02,
+          "maximum": 1.05,
+          "minimum": 1.0,
+          "title": "Maximum Tight Scale",
+          "type": "number"
+        },
+        "minimum_scale": {
+          "default": 0.96,
+          "maximum": 1.0,
+          "minimum": 0.9,
+          "title": "Minimum Scale",
+          "type": "number"
+        },
+        "motion_blur_probability": {
+          "default": 0.1,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Motion Blur Probability",
+          "type": "number"
+        },
+        "noise_stddev_maximum": {
+          "default": 3.5,
+          "maximum": 8.0,
+          "minimum": 0.0,
+          "title": "Noise Stddev Maximum",
+          "type": "number"
+        },
+        "probability": {
+          "default": 0.85,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Probability",
+          "type": "number"
+        },
+        "vertical_flip": {
+          "default": false,
+          "title": "Vertical Flip",
+          "type": "boolean"
+        }
+      },
+      "title": "DetectorAwareAugmentationConfig",
+      "type": "object"
+    },
+    "RecognizerModelConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "architecture": {
+          "default": "crnn_bilstm_ctc_v1",
+          "enum": [
+            "crnn_bilstm_ctc_v1",
+            "crnn_bilstm_dual_ctc_tr_v1"
+          ],
+          "title": "Architecture",
+          "type": "string"
+        },
+        "cnn_channels": {
+          "default": [
+            32,
+            64,
+            128
+          ],
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Cnn Channels",
+          "type": "array"
+        },
+        "dropout": {
+          "default": 0.1,
+          "exclusiveMaximum": 1.0,
+          "minimum": 0.0,
+          "title": "Dropout",
+          "type": "number"
+        },
+        "initialization_seed": {
+          "default": 20260824,
+          "title": "Initialization Seed",
+          "type": "integer"
+        },
+        "input_channels": {
+          "default": 3,
+          "enum": [
+            1,
+            3
+          ],
+          "title": "Input Channels",
+          "type": "integer"
+        },
+        "input_height": {
+          "default": 32,
+          "maximum": 128,
+          "minimum": 16,
+          "multipleOf": 4,
+          "title": "Input Height",
+          "type": "integer"
+        },
+        "lstm_hidden_size": {
+          "default": 128,
+          "maximum": 1024,
+          "minimum": 16,
+          "title": "Lstm Hidden Size",
+          "type": "integer"
+        },
+        "lstm_layers": {
+          "default": 2,
+          "maximum": 6,
+          "minimum": 1,
+          "title": "Lstm Layers",
+          "type": "integer"
+        }
+      },
+      "title": "RecognizerModelConfig",
+      "type": "object"
+    },
+    "TrDecoderConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "beam_width": {
+          "default": 12,
+          "maximum": 128,
+          "minimum": 2,
+          "title": "Beam Width",
+          "type": "integer"
+        },
+        "character_top_k": {
+          "default": 12,
+          "maximum": 37,
+          "minimum": 2,
+          "title": "Character Top K",
+          "type": "integer"
+        },
+        "minimum_decoder_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum Decoder Confidence"
+        },
+        "minimum_score_margin": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum Score Margin"
+        },
+        "type_score_weight": {
+          "default": 0.2,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Type Score Weight",
+          "type": "number"
+        }
+      },
+      "title": "TrDecoderConfig",
+      "type": "object"
+    },
+    "TrProfileConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "country_code": {
+          "const": "TR",
+          "default": "TR",
+          "title": "Country Code",
+          "type": "string"
+        },
+        "profile_id": {
+          "const": "TR",
+          "default": "TR",
+          "title": "Profile Id",
+          "type": "string"
+        },
+        "province_rule": {
+          "const": "existing-authoritative-01-through-81",
+          "title": "Province Rule",
+          "type": "string"
+        },
+        "supported_formats": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Supported Formats",
+          "type": "array"
+        }
+      },
+      "required": [
+        "supported_formats",
+        "province_rule"
+      ],
+      "title": "TrProfileConfig",
+      "type": "object"
+    },
+    "TypeHeadConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "blank_index": {
+          "const": 0,
+          "default": 0,
+          "title": "Blank Index",
+          "type": "integer"
+        },
+        "classes": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "enum": [
+                "DIGIT",
+                "LETTER"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "DIGIT",
+                "LETTER"
+              ],
+              "type": "string"
+            }
+          ],
+          "title": "Classes",
+          "type": "array"
+        },
+        "symbols": {
+          "const": "DL",
+          "default": "DL",
+          "title": "Symbols",
+          "type": "string"
+        }
+      },
+      "required": [
+        "classes"
+      ],
+      "title": "TypeHeadConfig",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "augmentation": {
+      "$ref": "#/$defs/DetectorAwareAugmentationConfig"
+    },
+    "character_head": {
+      "$ref": "#/$defs/CharacterHeadConfig"
+    },
+    "country_layout_head": {
+      "$ref": "#/$defs/CountryLayoutSeamConfig"
+    },
+    "crop": {
+      "$ref": "#/$defs/CropConfig"
+    },
+    "decoder": {
+      "$ref": "#/$defs/TrDecoderConfig"
+    },
+    "lambda_type": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Lambda Type",
+      "type": "number"
+    },
+    "model": {
+      "$ref": "#/$defs/RecognizerModelConfig"
+    },
+    "model_id": {
+      "const": "crnn_bilstm_dual_ctc_tr_v1",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "profile": {
+      "$ref": "#/$defs/TrProfileConfig"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "type_head": {
+      "$ref": "#/$defs/TypeHeadConfig"
+    }
+  },
+  "required": [
+    "model_id",
+    "model",
+    "crop",
+    "character_head",
+    "type_head",
+    "lambda_type",
+    "profile",
+    "decoder",
+    "augmentation",
+    "country_layout_head"
+  ],
+  "title": "EnhancedRecognitionFoundationConfig",
+  "type": "object"
+}
