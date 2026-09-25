@@ -5,6 +5,7 @@ import { callPrivate } from "@/server/bridge";
 import { consumeDailyQuota } from "@/server/daily-quota";
 import { requestId, safeError } from "@/server/errors";
 import { ImageError, mediaType, readBounded, validateImage } from "@/server/image";
+import { isRateLimitExempt } from "@/server/rate-limit-exemption";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -43,13 +44,14 @@ export async function POST(request: NextRequest): Promise<Response> {
   const ip = clientIp(request);
   if (!session || !SESSION_PATTERN.test(session)) return safeError("ORIGIN_REJECTED", 403, id);
   if (!ip) return safeError("MODEL_NOT_READY", 503, id);
+  const rateLimitExempt = isRateLimitExempt(ip);
   if (request.headers.get("x-privacy-acknowledged") !== "true") {
     return safeError("PRIVACY_ACKNOWLEDGEMENT_REQUIRED", 400, id);
   }
   let type: ReturnType<typeof mediaType>;
   try { type = mediaType(request.headers.get("content-type")); }
   catch { return safeError("UNSUPPORTED_MEDIA_TYPE", 415, id); }
-  const ticket = admission.acquire(session, ip);
+  const ticket = admission.acquire(session, ip, rateLimitExempt);
   if (ticket === "session") return safeError("SESSION_INFERENCE_ACTIVE", 409, id);
   if (ticket === "capacity") return safeError("CAPACITY_UNAVAILABLE", 503, id);
   if (ticket === "rate") return safeError("RATE_LIMITED", 429, id);
@@ -57,7 +59,7 @@ export async function POST(request: NextRequest): Promise<Response> {
     const bytes = await readBounded(request.body, request.headers.get("content-length"));
     await validateImage(bytes, type);
     try {
-      if (!consumeDailyQuota(ip)) return safeError("RATE_LIMITED", 429, id);
+      if (!rateLimitExempt && !consumeDailyQuota(ip)) return safeError("RATE_LIMITED", 429, id);
     } catch { return safeError("CAPACITY_UNAVAILABLE", 503, id); }
     const result = await callPrivate(bytes, type, locale(request, expectedOrigin), id);
     return Response.json(result, { headers: { "Cache-Control": "private, no-store" } });
