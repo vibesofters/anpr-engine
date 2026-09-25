@@ -73,7 +73,7 @@ test("bilingual raw-image BFF boundary and safe lifecycle", async () => {
   await once(privateServer, "listening");
   const next = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "-p", String(appPort)], {
     cwd: process.cwd(),
-    env: { ...process.env, ANPR_PUBLIC_ORIGIN: origin, ANPR_PRIVATE_INFERENCE_URL: `http://127.0.0.1:${privatePort}`, ANPR_INTERNAL_SERVICE_CREDENTIAL: credential, ANPR_TRUSTED_PROXY_IP_HEADER: "x-real-ip", ANPR_DAILY_QUOTA_PATH: join(quotaDir, "quota.sqlite") },
+    env: { ...process.env, ANPR_PUBLIC_ORIGIN: origin, ANPR_PRIVATE_INFERENCE_URL: `http://127.0.0.1:${privatePort}`, ANPR_INTERNAL_SERVICE_CREDENTIAL: credential, ANPR_TRUSTED_PROXY_IP_HEADER: "x-real-ip", ANPR_DAILY_QUOTA_PATH: join(quotaDir, "quota.sqlite"), ANPR_RATE_LIMIT_EXEMPT_IPS: "198.51.100.77" },
     stdio: ["ignore", "pipe", "pipe"]
   });
   let operationalOutput = "";
@@ -155,6 +155,16 @@ test("bilingual raw-image BFF boundary and safe lifecycle", async () => {
     const alternateCookie = (await fetch(origin)).headers.get("set-cookie")?.match(/anpr_session=[a-f0-9]{64}/)?.[0];
     assert.ok(alternateCookie);
     assert.equal((await post(image, { Cookie: alternateCookie })).status, 429);
+    assert.equal((await post(image, { Cookie: alternateCookie, "X-Forwarded-For": "198.51.100.77" })).status, 429);
+
+    const exemptCookie = (await fetch(origin)).headers.get("set-cookie")?.match(/anpr_session=[a-f0-9]{64}/)?.[0];
+    assert.ok(exemptCookie);
+    for (let attempt = 0; attempt < 26; attempt += 1) {
+      assert.equal((await post(image, { Cookie: exemptCookie, "X-Real-IP": "198.51.100.77" })).status, 200);
+    }
+    const afterExemption = new DatabaseSync(join(quotaDir, "quota.sqlite"), { readOnly: true });
+    assert.equal(afterExemption.prepare("SELECT key, used FROM quota").all().length, 1);
+    afterExemption.close();
 
     const newCookie = (await fetch(origin)).headers.get("set-cookie")?.match(/anpr_session=[a-f0-9]{64}/)?.[0];
     assert.ok(newCookie);

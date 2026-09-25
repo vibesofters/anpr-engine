@@ -44,6 +44,7 @@ services:
       ANPR_DAILY_QUOTA_PATH: /quota/quota.sqlite
       ANPR_PROXY_PROOF_ENABLED: "0"
       ANPR_TRUSTED_PROXY_IP_HEADER: x-real-ip
+      ANPR_RATE_LIMIT_EXEMPT_IPS: ${ANPR_RATE_LIMIT_EXEMPT_IPS:-}
     expose:
       - "3000"
     depends_on:

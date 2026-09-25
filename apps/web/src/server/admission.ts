@@ -13,16 +13,18 @@ class Admission {
   private activeSessions = new Set<string>();
   private recent = new Map<string, Entry>();
 
-  acquire(session: string, ip: string): { release: () => void } | "session" | "capacity" | "rate" {
+  acquire(session: string, ip: string, rateLimitExempt = false): { release: () => void } | "session" | "capacity" | "rate" {
     const sessionKey = `s:${this.digest(session)}`;
     const ipKey = `i:${this.digest(ip)}`;
     if (this.activeSessions.has(sessionKey)) return "session";
     if (this.active) return "capacity";
     const now = Date.now();
     this.prune(now);
-    if (this.count(sessionKey, now) >= SESSION_LIMIT || this.count(ipKey, now) >= IP_LIMIT) return "rate";
-    this.record(sessionKey, now);
-    this.record(ipKey, now);
+    if (!rateLimitExempt) {
+      if (this.count(sessionKey, now) >= SESSION_LIMIT || this.count(ipKey, now) >= IP_LIMIT) return "rate";
+      this.record(sessionKey, now);
+      this.record(ipKey, now);
+    }
     this.active = true;
     this.activeSessions.add(sessionKey);
     return {

@@ -53,6 +53,18 @@ shares its quota; this is not a guaranteed person-level identity. A
 multi-process/multi-instance frontend requires a new reviewed admission
 design before use. The private service remains the final global capacity gate.
 
+An exact trusted-client-IP exception can be configured with
+`ANPR_RATE_LIMIT_EXEMPT_IPS` (comma-separated IP literals). It skips both the
+five-minute per-session/per-IP counters and the daily SQLite quota for those
+addresses only. It does **not** skip image validation, origin/session checks,
+one-active-inference admission, private-service capacity, or deadlines. The
+exception is evaluated only after the production proxy's replacement of
+`X-Real-IP` has been verified; `X-Forwarded-For` and other caller-provided
+forwarding values never grant an exception. A shared/NAT IP grants the same
+exception to everyone behind that address, and its holder may change; review
+the configured address periodically and remove the exception when no longer
+needed.
+
 In production, set `ANPR_PUBLIC_ORIGIN` to the exact HTTPS origin. The
 `x-real-ip` value may be used only when `ANPR_TRUSTED_PROXY_IP_HEADER=x-real-ip`
 and the trusted reverse proxy **replaces**, rather than appends or forwards,
